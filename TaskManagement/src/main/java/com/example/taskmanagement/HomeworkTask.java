@@ -4,9 +4,24 @@ import java.util.Date;
 
 public class HomeworkTask implements Task{
     @Override
+    public String getDescription() {
+        return taskDescription;
+    }
+
+    @Override
     public String toString() {
-        return "HomeworkTask: " +
-                "taskName='" + taskName + '\'';
+        return "HomeworkTask: " + taskName + '\'';
+    }
+
+
+    @Override
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    @Override
+    public Priority getPriority() {
+        return priority;
     }
 
     private String taskName;
@@ -19,6 +34,10 @@ public class HomeworkTask implements Task{
     public void setTask(String taskName, String taskDescription) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
+    }
+    @Override
+    public String getTaskName() {
+        return taskName;
     }
     @Override
     public void setTaskName(String taskName) {

@@ -15,6 +15,26 @@ public class ShoppingTask implements Task{
     }
 
     @Override
+    public String getTaskName() {
+        return taskName;
+    }
+
+    @Override
+    public Priority getPriority() {
+        return priority;
+    }
+
+    @Override
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    @Override
+    public String getDescription() {
+        return taskDescription;
+    }
+
+    @Override
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
@@ -31,8 +51,7 @@ public class ShoppingTask implements Task{
 
     @Override
     public String toString() {
-        return "ShoppingTask: " +
-                "taskName='" + taskName + '\'';
+        return "ShoppingTask: " + taskName + '\'';
     }
 
     @Override

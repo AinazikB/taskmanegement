@@ -7,11 +7,31 @@ public class MeetingTask implements Task{
 
     @Override
     public String toString() {
-        return "MeetingTask: " +
-                "taskName='" + taskName + '\'';
+        return "MeetingTask: " + taskName + '\'';
     }
 
     private String taskDescription;
+
+    @Override
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    @Override
+    public Priority getPriority() {
+        return priority;
+    }
+
+    @Override
+    public String getDescription() {
+        return taskDescription;
+    }
+
+    @Override
+    public String getTaskName() {
+        return taskName;
+    }
+
     private boolean completed;
     private Priority priority;
     private Date deadline;
