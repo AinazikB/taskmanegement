@@ -3,6 +3,17 @@ package com.example.taskmanagement;
 import java.util.Date;
 
 public class HomeworkTask implements Task{
+    private String taskType;
+
+    @Override
+    public String getTaskType() {
+        return "Homework Task";
+    }
+
+    @Override
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
+    }
     @Override
     public String getDescription() {
         return taskDescription;
@@ -12,7 +23,6 @@ public class HomeworkTask implements Task{
     public String toString() {
         return "HomeworkTask: " + taskName + '\'';
     }
-
 
     @Override
     public Date getDeadline() {

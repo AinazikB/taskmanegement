@@ -2,6 +2,8 @@ package com.example.taskmanagement;
 import java.util.Date;
 
 public interface Task {
+    String getTaskType();
+    void setTaskType(String taskType);
     void setTask(String taskName, String taskDescription);
     void setTaskName(String taskName);
     String getTaskName();

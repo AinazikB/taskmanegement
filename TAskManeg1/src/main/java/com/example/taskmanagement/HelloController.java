@@ -128,13 +128,14 @@ public class HelloController {
         }
         createTask();
     }
+
     @FXML
     protected void onTaskCompleted() {
         int selectedIndex = listView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             Task selectedTask = tasks.get(selectedIndex);
             selectedTask.markAsComplete();
-            tasks.remove(selectedIndex);
+            deleteTask();
             name.clear();
             description.clear();
 
@@ -145,55 +146,68 @@ public class HelloController {
             level2.setSelected(false);
             level3.setSelected(false);
             date.setValue(null);
-
             selectedText.setText("Task completed and removed");
             completed.setSelected(false);
         } else {
             selectedText.setText("No task selected");
             completed.setSelected(false);
         }
-    }
 
+
+    }
     protected void createTask() {
         TaskDAO dao = new TaskDAO();
-        Connection conn = dao.getConnection();
-        String sql = "INSERT INTO task (title, task_type, description, priority, deadline) VALUES (?, ?, ?, ?, ?);";
 
-        try (
-                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String taskType = "";
+        if (taskButton1.isSelected()) {
+            taskType = "Homework Task";
+        } else if (taskButton2.isSelected()) {
+            taskType = "Meeting Task";
+        } else if (taskButton3.isSelected()) {
+            taskType = "Shopping Task";
+        }
 
-            stmt.setString(1, name.getText());
-            if (taskButton1.isSelected()) {
-                stmt.setString(2, "Homework Task");
-            } else if (taskButton2.isSelected()) {
-                stmt.setString(2, "Meeting Task");
-            } else if (taskButton3.isSelected()) {
-                stmt.setString(2, "Shopping Task");
-            }
-            stmt.setString(3, description.getText());
-            if (level1.isSelected()) {
-                stmt.setString(4, "LOW");
-            } else if (level2.isSelected()) {
-                stmt.setString(4, "MEDIUM");
-            } else if (level3.isSelected()) {
-                stmt.setString(4, "HIGH");
-            }
-            LocalDate selectedDate = date.getValue();
-            if (selectedDate != null) {
-                stmt.setDate(5, java.sql.Date.valueOf(selectedDate));
-            } else {
-                stmt.setNull(5, java.sql.Types.DATE);
-            }
-            int affectedRows = stmt.executeUpdate();
+        String taskName = name.getText();
+        String taskDescription = description.getText();
+        String priority = "";
+        if (level1.isSelected()) {
+            priority = "LOW";
+        } else if (level2.isSelected()) {
+            priority = "MEDIUM";
+        } else if (level3.isSelected()) {
+            priority = "HIGH";
+        }
 
-            if (affectedRows == 0) {
-                throw new SQLException("Creating task failed.");
-            } else  {
-                System.out.println("Created successfully");
-            }
+        LocalDate selectedDate = date.getValue();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        dao.createTask(taskName, taskType, taskDescription, priority, selectedDate);
+
+        dao.closeConnection();
+    }
+
+    protected void deleteTask(){
+        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+
+        if(selectedIndex >= 0){
+            Task selectedTask = tasks.get(selectedIndex);
+
+            TaskDAO dao = new TaskDAO();
+            dao.deleteTask(selectedTask.getTaskName());
+            dao.closeConnection();
+
+            tasks.remove(selectedIndex);
+        }
+    }
+
+    @FXML
+    protected void updateTask(){
+        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        if(selectedIndex >= 0){
+            Task selectedTask = tasks.get(selectedIndex);
+
+            TaskDAO dao = new TaskDAO();
+            dao.updateTask(selectedTask);
+            dao.closeConnection();
         }
     }
 }

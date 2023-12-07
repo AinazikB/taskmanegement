@@ -3,6 +3,17 @@ package com.example.taskmanagement;
 import java.util.Date;
 
 public class ShoppingTask implements Task{
+    private String taskType;
+
+    @Override
+    public String getTaskType() {
+        return "Shopping Task";
+    }
+
+    @Override
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
+    }
     private String taskName;
     private String taskDescription;
     private boolean completed;
